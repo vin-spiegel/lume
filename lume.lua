@@ -979,7 +979,7 @@ end
 
 -- - `str` 내부의 lua 코드를 실행합니다.
 function lume.dostring(str)
-  return assert((loadstring or load)(str))()
+  return assert(load(str))()
 end
 
 -- - 임의의 UUID 문자열을 생성합니다. [RFC 4122](https://www.ietf.org/rfc/rfc4122.txt)
