@@ -449,4 +449,4 @@ lume.count(t, { age = 10 }) -- returns 2
 
 ## License
 
-[LICENSE](LICENSE)
+[rxi](https://github.com/rxi/lume/blob/master/LICENSE)
