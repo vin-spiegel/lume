@@ -964,18 +964,18 @@ end
 -- lume.trace("hello", 1234)
 --      -> "example.lua:12: hello 1234"
 -- ```
-function lume.trace(...)
-  local info = debug.getinfo(2, "Sl")
-  local t = {info.short_src .. ":" .. info.currentline .. ":"}
-  for i = 1, select("#", ...) do
-    local x = select(i, ...)
-    if type(x) == "number" then
-      x = string.format("%g", lume.round(x, .01))
-    end
-    t[#t + 1] = tostring(x)
-  end
-  print(table.concat(t, " "))
-end
+-- function lume.trace(...)
+--   local info = debug.getinfo(2, "Sl")
+--   local t = {info.short_src .. ":" .. info.currentline .. ":"}
+--   for i = 1, select("#", ...) do
+--     local x = select(i, ...)
+--     if type(x) == "number" then
+--       x = string.format("%g", lume.round(x, .01))
+--     end
+--     t[#t + 1] = tostring(x)
+--   end
+--   print(table.concat(t, " "))
+-- end
 
 -- - `str` 내부의 lua 코드를 실행합니다.
 -- function lume.dostring(str)
@@ -1071,6 +1071,7 @@ function lume.ripairs(t)
   return ripairs_iter, t, (#t + 1)
 end
 
+-- - rgb 컬러를 리턴합니다
 function lume.color(str, mul)
   mul = mul or 1
   local r, g, b, a

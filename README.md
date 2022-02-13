@@ -365,32 +365,32 @@ lume.format("{b} hi {a}", {a = "mark", b = "Oh"}) -- Returns "Oh hi mark"
 lume.format("Hello {1}!", {"world"}) -- Returns "Hello world!"
 ```
 
-#### lume.trace(...)
+<!-- #### lume.trace(...)
 현재 파일 이름과 줄 번호를 같이 출력합니다.
 
 ```lua
 -- Assuming the file is called "example.lua" and the next line is 12:
 lume.trace("hello", 1234) -- Prints "example.lua:12: hello 1234"
-```
-
+``` -->
+<!-- 
 #### lume.dostring(str)
 `str` 내부의 lua 코드를 실행합니다.
 
 ```lua
 lume.dostring("print('Hello!')") -- Prints "Hello!"
-```
+``` -->
 
 #### lume.uuid()
 임의의 UUID 문자열을 생성합니다. [RFC 4122](https://www.ietf.org/rfc/rfc4122.txt)
 
 
-#### lume.hotswap(modname)
+<!-- #### lume.hotswap(modname)
 이미 로드된 모듈을 다시 로드합니다 프로그램을 다시 시작하지 않고도 코드 변경의 효과를 즉시 확인할 수 있습니다. `modname` 은 `require()` 로 모듈을 로드할 때 사용한 것과 같은 문자열이어야 합니다. 오류가 발생하면 전역 환경이 복원되고 nil과 오류 메시지가 반환됩니다.
 
 ```lua
 lume.hotswap("lume") -- Reloads the lume module
 assert(lume.hotswap("inexistant_module")) -- Raises an error
-```
+``` -->
 
 #### lume.ripairs(t)
 `ipairs()` 와 동일한 기능을 수행하지만 역순으로 반복합니다.
