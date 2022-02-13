@@ -142,7 +142,7 @@ function lume.smooth(a, b, amount)
   return a + (b - a) * m
 end
 
--- -  Ping-pongs the number x between 0 and 1.
+-- 짝수는 0, 음수는 1을 반환합니다
 ---@param x number
 function lume.pingpong(x)
   return 1 - math_abs(1 - x % 2)
@@ -202,7 +202,7 @@ end
 -- - 배열 t에서 임의의 값을 반환합니다. 배열이 비어 있으면 오류가 발생합니다.
 ---@param t any[]
 function lume.randomchoice(t)
-  return t[rand(0, #t)]
+  return t[rand(1, #t + 1)]
 end
 
 -- -  가중치는 0 이상이어야 하며 숫자가 클수록 선택될 확률이 높아집니다. 테이블이 비어 있거나 가중치가 0 미만이거나 모든 가중치가 0이면 오류가 발생합니다.
@@ -978,14 +978,14 @@ function lume.trace(...)
 end
 
 -- - `str` 내부의 lua 코드를 실행합니다.
-function lume.dostring(str)
-  return assert(load(str))()
-end
+-- function lume.dostring(str)
+--   return assert(load(str))()
+-- end
 
 -- - 임의의 UUID 문자열을 생성합니다. [RFC 4122](https://www.ietf.org/rfc/rfc4122.txt)
 function lume.uuid()
   local fn = function(x)
-    local r = math.random(16) - 1
+    local r = rand(1, 17) - 1
     r = (x == "x") and (r + 1) or (r % 4) + 9
     return ("0123456789abcdef"):sub(r, r)
   end
@@ -999,57 +999,57 @@ end
 -- assert(lume.hotswap("inexistant_module"))
 --      -> Raises an error
 -- ```
-function lume.hotswap(modname)
-  local oldglobal = lume.clone(_G)
-  local updated = {}
-  local function update(old, new)
-    if updated[old] then
-      return
-    end
-    updated[old] = true
-    local oldmt, newmt = getmetatable(old), getmetatable(new)
-    if oldmt and newmt then
-      update(oldmt, newmt)
-    end
-    for k, v in pairs(new) do
-      if type(v) == "table" then
-        update(old[k], v)
-      else
-        old[k] = v
-      end
-    end
-  end
-  local err = nil
-  local function onerror(e)
-    for k in pairs(_G) do
-      _G[k] = oldglobal[k]
-    end
-    err = lume.trim(e)
-  end
-  local ok, oldmod = pcall(require, modname)
-  oldmod = ok and oldmod or nil
-  xpcall(
-    function()
-      package.loaded[modname] = nil
-      local newmod = require(modname)
-      if type(oldmod) == "table" then
-        update(oldmod, newmod)
-      end
-      for k, v in pairs(oldglobal) do
-        if v ~= _G[k] and type(v) == "table" then
-          update(v, _G[k])
-          _G[k] = v
-        end
-      end
-    end,
-    onerror
-  )
-  package.loaded[modname] = oldmod
-  if err then
-    return nil, err
-  end
-  return oldmod
-end
+-- function lume.hotswap(modname)
+--   local oldglobal = lume.clone(_G)
+--   local updated = {}
+--   local function update(old, new)
+--     if updated[old] then
+--       return
+--     end
+--     updated[old] = true
+--     local oldmt, newmt = getmetatable(old), getmetatable(new)
+--     if oldmt and newmt then
+--       update(oldmt, newmt)
+--     end
+--     for k, v in pairs(new) do
+--       if type(v) == "table" then
+--         update(old[k], v)
+--       else
+--         old[k] = v
+--       end
+--     end
+--   end
+--   local err = nil
+--   local function onerror(e)
+--     for k in pairs(_G) do
+--       _G[k] = oldglobal[k]
+--     end
+--     err = lume.trim(e)
+--   end
+--   local ok, oldmod = pcall(require, modname)
+--   oldmod = ok and oldmod or nil
+--   xpcall(
+--     function()
+--       package.loaded[modname] = nil
+--       local newmod = require(modname)
+--       if type(oldmod) == "table" then
+--         update(oldmod, newmod)
+--       end
+--       for k, v in pairs(oldglobal) do
+--         if v ~= _G[k] and type(v) == "table" then
+--           update(v, _G[k])
+--           _G[k] = v
+--         end
+--       end
+--     end,
+--     onerror
+--   )
+--   package.loaded[modname] = oldmod
+--   if err then
+--     return nil, err
+--   end
+--   return oldmod
+-- end
 
 local ripairs_iter = function(t, i)
   i = i - 1
